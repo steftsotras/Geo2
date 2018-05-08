@@ -103,6 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && (isset($_POST['submit'])) && ($_POST
                                 '$email',
                                  now()
                             )";
+							
+	
 //echo $query;
 //die;
     $result = mysqli_query($link, $query);

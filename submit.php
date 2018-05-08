@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 include "connect.php";
 
 
@@ -22,6 +23,9 @@ $gini = (float)$data->gini;
     $prevQuery = "SELECT * FROM countries WHERE country_name = '".$data->name."'";
 
     $prevResult = $link->query($prevQuery);
+	
+	
+	
     if($prevResult->num_rows > 0){ 
         echo "Country already stored in database";
     }else{
@@ -81,7 +85,33 @@ $gini = (float)$data->gini;
 		}
 		
     }
-
-
+	
+	
+	$prevquery2 = "SELECT * FROM user_country WHERE country_name = '".$data->name."' AND username = '".$_SESSION['username']."'";
+	
+	$prevResult2 = $link->query($prevquery2);
+	
+	if($prevResult2->num_rows > 0){ 
+		
+		echo "<br>";
+		echo "Country saved already!";
+	}
+	else{
+		
+		$user = $_SESSION['username'];
+    
+		$query2 = "insert into user_country(username,country_name)Values('$user','$name')";
+		$result = mysqli_query($link, $query2);
+		if($result){
+			mysqli_commit($link);
+		}
+		else{
+			mysqli_rollback($link);
+			echo "Error with database";
+		}
+	}
+	
+	
+	
 
 ?>

@@ -17,9 +17,10 @@ exec($cmd,$output);
 #var_dump($output);
 if($output){
 $out = '  
+		
 		<br />  
         <br />
-        <div class="table-responsive">  
+        <div class="table_responsive">  
             <table class="table-bordered" >  
                 <tr>  
                     <th >Flag</th>  

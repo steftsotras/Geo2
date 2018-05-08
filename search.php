@@ -8,10 +8,25 @@ session_start();
         <title>Country Search info</title>  
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
 		<style>
+		
+		body, html {
+		  height: 100%;
+		  margin: 0;
+		  font: 400 15px/1.8 "Lato", sans-serif;
+		  color: #777;
+		}
+		
 		table, th, td {
 			border: 1px solid black;
 			border-collapse: collapse;
 		}
+		
+		.round{
+			border-radius: 25px;
+			border: 2px solid #73AD21;
+			padding: 5px; 
+		}
+		
 		th, td {
 			padding: 5px;
 			text-align: center;
@@ -26,6 +41,16 @@ session_start();
 			animation: spin 2s linear infinite;
 			display:none;
 		}
+		
+		.bgimg-1 {
+		  position: relative;
+		  height: 100%;
+		  background-image: url("bg2.jpeg");
+		  background-position: center;
+		  background-repeat: no-repeat;
+		  background-size: cover;
+
+		}
 
 		@keyframes spin {
 			0% { transform: rotate(0deg); }
@@ -34,7 +59,11 @@ session_start();
 		
 		</style>
 	</head>  
+	
+	
     <body align="center">  
+	<div class="bgimg-1"> 
+	
 		<div class="label">  
             <br />  
 			<h2>Input a countrys name to see information</h2>
@@ -50,7 +79,7 @@ session_start();
 			<center><div class="loader" id="loader2"></div></center>
 			
 			<br/>
-			<div class="table-responsive" align="center">  
+			<div class="table_responsive" align="center">  
 				<div id="live_data"></div>                 
 			</div>
 			
@@ -63,6 +92,8 @@ session_start();
 				<div id="live_message"></div>                 
 			</div>
 			
+		</div>
+		
 		</div>
     </body>  
 </html> 
