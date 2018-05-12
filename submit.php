@@ -6,6 +6,7 @@ include "connect.php";
 
 //Convert JSON data into PHP variable
 $data = json_decode(file_get_contents("php://input"));
+$ogname = $data->ogname;
 $flag = $data->flag;
 $name = $data->name;
 $cname = $data->cname;
@@ -20,7 +21,7 @@ $gini = (float)$data->gini;
 
 
     //Check whether user data already exists in database
-    $prevQuery = "SELECT * FROM countries WHERE country_name = '".$data->name."'";
+    $prevQuery = "SELECT * FROM countries WHERE ogname = '".$ogname."'";
 
     $prevResult = $link->query($prevQuery);
 	
@@ -46,6 +47,7 @@ $gini = (float)$data->gini;
 		
 		$query = "insert into countries 
                             (
+								ogname,
                                 flag,
                                 country_name,
                                 capital_name,
@@ -60,6 +62,7 @@ $gini = (float)$data->gini;
                             )
 							Values
                             (
+								'$ogname',
                                 '$flag',
                                 '$name',
                                 '$cname',
@@ -87,7 +90,7 @@ $gini = (float)$data->gini;
     }
 	
 	
-	$prevquery2 = "SELECT * FROM user_country WHERE country_name = '".$data->name."' AND username = '".$_SESSION['username']."'";
+	$prevquery2 = "SELECT * FROM user_country WHERE ogname = '".$ogname."' AND username = '".$_SESSION['username']."'";
 	
 	$prevResult2 = $link->query($prevquery2);
 	
@@ -100,14 +103,15 @@ $gini = (float)$data->gini;
 		
 		$user = $_SESSION['username'];
     
-		$query2 = "insert into user_country(username,country_name)Values('$user','$name')";
+		$query2 = "insert into user_country(username,ogname)Values('$user','$ogname')";
 		$result = mysqli_query($link, $query2);
 		if($result){
 			mysqli_commit($link);
 		}
 		else{
 			mysqli_rollback($link);
-			echo "Error with database";
+			echo "<br>";
+			echo "Error with user_country database";
 		}
 	}
 	

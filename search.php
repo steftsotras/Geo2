@@ -5,8 +5,42 @@ session_start();
 <html>  
     <head>  
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Country Search info</title>  
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+		
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	  <script>
+	  $( function() {
+		  
+		    var availableCountries = [];
+			
+			$.ajax({
+				type: 'POST',
+				url: 'countriesSearched.php',
+				success: function(result) {
+					
+					json = JSON.parse(result);
+					
+					var keys = Object.keys(json);
+					keys.forEach(function(key){
+						availableCountries.push(json[key]);
+					});
+					
+				}
+			});
+			
+			$( "#country" ).autocomplete({
+			  source: availableCountries
+			});
+		} );
+	  </script>
+		
+		
+		
 		<style>
 		
 		body, html {
@@ -63,6 +97,9 @@ session_start();
 	
     <body align="center">  
 	<div class="bgimg-1"> 
+		
+		<br>
+		<div class = "left"><a href="menu.php"><img src="back.png" height="50" width="150"/></a></div>
 	
 		<div class="label">  
             <br />  
@@ -71,7 +108,7 @@ session_start();
         <div class="container">  
             <br />  
             <br />
-			<div class="searching">  
+			<div class="ui-widget">  
 				<input type="text" id="country" value=""> <br>
 				<button type="button" id="search">Search Country</button>
 			</div>
@@ -101,6 +138,7 @@ session_start();
 <script>
 
 var country_data;
+var country_name;
 //JAVASCRIPT FUNCTION TRIGGERED WHEN BUTTON IS CLICKED
 $(document).on('click', '#search', function(){
 	
@@ -116,7 +154,7 @@ $(document).on('click', '#search', function(){
 	
 	
 	//PASSING TEXT VALUE TO A VARIABLE
-	var country_name = $('#country').val();
+	country_name = $('#country').val();
 	
 	var show = false;
 	
@@ -171,7 +209,7 @@ $(document).on('click', '#submit', function(){
 	
 	
 	
-	var dataToSend = { "flag": country_data[1],
+	var dataToSend = { "ogname": country_name ,"flag": country_data[1],
 								"name": country_data[2],
 								"cname": country_data[3],
 								"lat": country_data[4],

@@ -71,14 +71,28 @@ if __name__ == "__main__":
 			break;
 
 	#POPULATION
+	# for tr in table_cont.findAll('tr'):
+		# if(re.search('estimate',str(tr))):
+			# try:
+				# pop = re.search('[0-9]+,[0-9]+,?[0-9]*',str(tr)).group(0)
+			# except AttributeError:
+				# pop='fail'
+			# break;
+
+	#POPULATION
+	temp = 0;
 	for tr in table_cont.findAll('tr'):
-		if(re.search('estimate',str(tr))):
+		if (temp == 1):
 			try:
 				pop = re.search('[0-9]+,[0-9]+,?[0-9]*',str(tr)).group(0)
 			except AttributeError:
 				pop='fail'
 			break;
-
+		if(re.search('Population',str(tr))):
+			temp = 1;
+			
+	
+	
 	#GDP
 	for tr in table_cont.findAll('tr'):
 		if(re.search('Per capita',str(tr))):
