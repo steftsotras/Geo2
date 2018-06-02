@@ -10,48 +10,8 @@
 		    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
 			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 			<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		
-		
-		<style>
+		<script>
 			
-			body, html {
-			  height: 100%;
-			  margin: 0;
-			  font: 400 15px/1.8 "Lato", sans-serif;
-			  color: #000;
-			}
-			
-			.bgimg-1 {
-			  position: relative;
-			  height: 100%;
-			  background-image: url("bg2.jpeg");
-			  background-position: center;
-			  background-repeat: no-repeat;
-			  background-size: cover;
-
-			}
-		</style>
-		
-</head>
-	
-<body align='center'>
-	<div class="bgimg-1">
-	<br>
-	<div class = "left"><a href="menu.php"><img src="back.png" height="50" width="150"/></a></div>
-	<br>
-	<center><div id="regions_div" style="width: 1200px; height: 700px;"></div></center>
-	<div>
-	<br>
-	<center>
-	<input id="slide" type="range" min="1000" max="10000" step="1" value="10">
-	<div id="sliderAmount">Control how fast the clustering is happening</div>
-
-	<button id="start_button"onclick="start()" >start</button>
-	<button id="stop_button"onclick="stop()" style="display:none;">stop</button>
-	</center>
-	
-	<script>
-			//$(document).ready(function(){
 			var countries = [];
 			$.ajax({
 				type: 'POST',
@@ -64,7 +24,7 @@
 						countries.push(json[key]);
 					});
 					
-					//console.log(JSON.stringify(countries));
+					console.log(JSON.stringify(countries));
 					
 					//MAKING LAT LON FROM STRING TO FLOAT
 					for(var j=0;j<countries.length;j++){
@@ -77,57 +37,14 @@
 			});
 			
 			
-			var main_interval;
-var interval_speed = 3000;
-var data;
-var chart;
-var options;
-var cluster1 = [];
-var cluster2 = [];
-var clusterc1 =[];
-var clusterc2 = [];
-var t=0;
-
-
-var slide = document.getElementById('slide');
-var sliderDiv = document.getElementById("sliderAmount");
-
-slide.onchange = function() {
- 		interval_speed = this.value;
-    sliderDiv.innerHTML = this.value/1000 + " sec";
-}
-
-
-function stop(){
-		window.clearInterval(main_interval);
-    document.getElementById("stop_button").style.display="none";
-    document.getElementById("start_button").style.display="block";
-    document.getElementById("slide").style.display="block";
-    document.getElementById("sliderAmount").style.display="block";
-    
-}
-
-function start(){
-		document.getElementById("start_button").style.display="none";
-    document.getElementById("slide").style.display="none";
-    document.getElementById("sliderAmount").style.display="none";
-    document.getElementById("stop_button").style.display="block";
-    cluster1 = [];
-    cluster2 = [];
-    clusterc1 =[];
-    clusterc2 = [];
-    t=0;
-		kmeans();
-}
-
-google.charts.load('current', {
+			google.charts.load('current', {
 			'packages':['geochart'],
-			'mapsApiKey': 'AIzaSyAR8X1yiG5J8hRsPqrRJBJ5d5KGIMNd7lU'
+			'mapsApiKey': 'AIzaSyBbeWfaSAyU1MJOFR7ORpNZlWCzo90obF8'
 			});
 			google.charts.setOnLoadCallback(drawRegionsMap);
 
 			function drawRegionsMap() {
-				data = new google.visualization.DataTable();
+				var data = new google.visualization.DataTable();
 
 				data.addColumn('string', 'Country');
 				data.addColumn('number', 'Cluster');
@@ -135,7 +52,7 @@ google.charts.load('current', {
 				for (i = 0; i <countries.length; i++)
 				data.addRow(countries[i].slice(0,1).concat(null)); 
 
-				options = {showTooltip: true,
+				var options = {showTooltip: true,
 				showInfoWindow: true ,
 				colorAxis: {colors: ['#00853f', 'black', '#e31b23']},
 				backgroundColor: '#81d4fa',
@@ -144,13 +61,12 @@ google.charts.load('current', {
 
 				};
 
-				chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+				var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
 
 				chart.draw(data, options);
 
-				//kmeans();
+				kmeans(chart,options,data);
 			}
-      
 			function updateChart(chart,options,dataTable,cluster1,cluster2,center1,center2) {
 
 				var  finalarray = [];
@@ -176,11 +92,14 @@ google.charts.load('current', {
 
 				}
 			
-			function kmeans(){
+			function kmeans(chart,options,data){
 
 
 				var tobe = countries.slice();
-				
+				var cluster1 = [];
+				var cluster2 = [];
+				var clusterc1 =[];
+				var clusterc2 = [];
 				var d1;
 				var d2;
 
@@ -220,21 +139,11 @@ google.charts.load('current', {
 				console.log(JSON.stringify((clusterc1)));
 				console.log(JSON.stringify((clusterc2)));
 
-				updateChart(chart,options,data,cluster1,cluster2,clusterc1,clusterc2);
-				
-        main_interval = window.setInterval(function(){main_kmeans();}, interval_speed);
-				
 
-}
 
-function main_kmeans(){
-		
-    if(t == 4){
-     //window.clearInterval(main_interval);
-     stop();
-    }
-    
-		for(i=0;i<cluster1.length;i++){
+				for(var t=0;t<5;t++){
+						
+					for(i=0;i<cluster1.length;i++){
 							
 						d1 = distance(cluster1,clusterc1,i);
 						d2 = distance(cluster1,clusterc2,i);
@@ -269,37 +178,11 @@ function main_kmeans(){
 					//GRAFIKA
 					
 					updateChart(chart,options,data,cluster1,cluster2,clusterc1,clusterc2);
-					t++;
-          
-}
+					
+					
+					
+				}
 
-function drawTable(){
-
-		var myTableDiv = document.getElementById("table");
-
-    var table = document.createElement('TABLE');
-    table.border = '1';
-
-    var tableBody = document.createElement('TBODY');
-    table.appendChild(tableBody);
-
-    
-    var tr = document.createElement('TR');
-    tableBody.appendChild(tr);
-
-
-    var td = document.createElement('TD');
-    td.width = '100';
-    td.appendChild(document.createTextNode("Cluster 1"));
-    tr.appendChild(td);
-    
-    var td = document.createElement('TD');
-    td.width = '100';
-    td.appendChild(document.createTextNode("Cluster 1"));
-    tr.appendChild(td);
-        
-    
-    myTableDiv.appendChild(table);
 }
 
 function newCenter(cluster){
@@ -321,13 +204,41 @@ function distance(cluster,center,i){
     return Math.sqrt(Math.pow((cluster[i][1] - center[0]),2) + Math.pow((cluster[i][2] - center[1]),2));
 }
 
-//});
+
 		</script>
+		
+		<style>
+			
+			body, html {
+			  height: 100%;
+			  margin: 0;
+			  font: 400 15px/1.8 "Lato", sans-serif;
+			  color: #777;
+			}
+			
+			.bgimg-1 {
+			  position: relative;
+			  height: 100%;
+			  background-image: url("bg2.jpeg");
+			  background-position: center;
+			  background-repeat: no-repeat;
+			  background-size: cover;
+
+			}
+		</style>
+		
+</head>
+	
+<body align='center'>
+	<div class="bgimg-1">
+	<br>
+	<div class = "left"><a href="menu.php"><img src="back.png" height="50" width="150"/></a></div>
+	<br>
+	<center><div id="regions_div" style="width: 1200px; height: 700px;"></div></center>
+	<div>
+	
 	
 </body>
 
 	
 </html>
-
-
-

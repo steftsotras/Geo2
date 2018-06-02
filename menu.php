@@ -1,9 +1,12 @@
-<?php session_start();?>
+<?php session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="eng">
 <head>
 	<title>Welcome</title>
 	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<style>
 		body, html {
 		  height: 100%;
@@ -102,8 +105,18 @@ window.fbAsyncInit = function() {
 // Logout from facebook
 function fbLogout() {
     FB.logout(function() {
-		window.location = 'https://localhost/geo/index.php';
+		logout2();
     });
 }
+
+$(document).on('click', '#search', function logout2(){
+	
+	$.ajax({
+			method:'GET',
+			url:'unset_sess.php',
+			success:function(data){window.location = 'https://localhost/geo/index.php';}
+		});
+});
+
 
 </script>

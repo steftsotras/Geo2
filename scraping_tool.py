@@ -65,7 +65,7 @@ if __name__ == "__main__":
 	for tr in table_cont.findAll('tr'):
 		if(re.search('Total',str(tr))):
 			try:
-				area = re.search('[0-9]+,[0-9]+',str(tr)).group(0)
+				area = re.search('[0-9]+,?[0-9]+,?[0-9]*',str(tr)).group(0)
 			except AttributeError:
 				area='fail'
 			break;
