@@ -21,7 +21,7 @@
 		.bgimg-1 {
 		  position: relative;
 		  height: 100%;
-		  background-image: url("World_Map.jpg");
+		  background-image: url("Images/World_Map.jpg");
 		  background-position: center;
 		  background-repeat: no-repeat;
 		  background-size: cover;
@@ -63,7 +63,7 @@
 	<!--<center><h2 style="Lucida Console, Monaco, monospace"> Welcome to our Page</h2></center>-->
 	<br>
 	<br>
-	<form name="login" method="post" action="login.php">
+	<form name="login" method="post" action="Login_Register/login.php">
 	<table class="table1" align="center">
 		<tr>
 			<td class="round" width="219"  bgcolor="#387C0B">
@@ -128,14 +128,14 @@
 			?>
 		</tr>
 		<tr>
-			<td class="round" width="219" bgcolor="#387C0B"><font color="black">Not Registered? </font><a href="register.php" target="_self"><font color="#29CEBE">Register</font></a><font color="#29CEBE"> </font><b><i><font color="black"> Now!</font></i></b></td>
+			<td class="round" width="219" bgcolor="#387C0B"><font color="black">Not Registered? </font><a href="Login_Register/register.php" target="_self"><font color="#29CEBE">Register</font></a><font color="#29CEBE"> </font><b><i><font color="black"> Now!</font></i></b></td>
 		</tr>
 	</table>
 	</form>
 
 	
 	<!-- Facebook login or logout button -->
-	<center><a href="javascript:void(0);" onclick="fbLogin()" id="fbLink" ><img src="fblogin.png" height="80" width="330"/></a></center>
+	<center><a href="javascript:void(0);" onclick="fbLogin()" id="fbLink" ><img src="Images/fblogin.png" height="80" width="330"/></a></center>
 
 	</div>
 </body>
@@ -191,7 +191,7 @@ function getFbUserData(){
         
 		savefbUserData(response);
 		
-		window.location = 'https://localhost/geo/menu.php';
+		window.location = 'https://localhost/geo/Menu/menu.php';
 		
 		
 		
