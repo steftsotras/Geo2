@@ -7,4 +7,4 @@ Crawling real time data from wikipedea with beautifulSoup in a python script.
 
 Representing data with google charts. 
 
-Geolocation based Clustering with Kmeans algorithms with google charts.
+Geolocation based Clustering with Kmeans algorithm shown in google charts.
